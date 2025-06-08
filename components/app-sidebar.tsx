@@ -57,7 +57,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-2">
+                    <a href={item.url} className="flex items-center gap-2 hover:bg-zinc-700">
                       <item.icon className="!h-5 !w-5" />
                       <span>{item.title}</span>
                     </a>

@@ -1,8 +1,16 @@
 "use client";
+import { useState } from "react";
 import { Search } from "lucide-react";
 import GooeyNav from "@/components/GooeyNav/GooeyNav";
 import CalendarHeader from "@/components/ui/calender/CalendarHeader"
+import Calendar from "@/components/ui/calender/Calendar";
+import {CalendarEvent} from "@/components/ui/calender/types/calendar"
 const Calender_view = () => {
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+  const events: CalendarEvent[] = [
+    { id: "1", title: "Coffee", date: new Date(2025,0,6,11,30) },
+    { id: "2", title: "Standup", date: new Date(2025,0,6,9,0) },
+  ];
   const items = [
     { label: "Exams", href: "#" },
     { label: "Meetings", href: "#" },
@@ -38,6 +46,7 @@ const Calender_view = () => {
 
       <div className="mt-2">
         <CalendarHeader/>
+        <Calendar month={currentMonth} events={events} />
         </div>
 
 

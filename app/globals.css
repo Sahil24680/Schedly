@@ -42,6 +42,17 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
+.sidebar {
+  /* clear any previous bg-color so the gradient shows */
+  background-color: transparent !important;
+
+  /* apply the gradient */
+  background-image: var(--sidebar);
+
+  /* if you need full-cover resizing: */
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
 :root {
   --radius: 0.625rem;
@@ -79,7 +90,7 @@
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
+  --background: rgba(22, 22, 24, 1);
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);
   --card-foreground: oklch(0.984 0.003 247.858);
@@ -102,7 +113,12 @@
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar: linear-gradient(
+    180deg,
+    #282828 0%,
+    #1b1a1d 50%,
+    #1f1f1f 100%
+  );
   --sidebar-foreground: oklch(0.984 0.003 247.858);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
@@ -111,7 +127,16 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
+@layer utilities {
+  @keyframes shine {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
 
+  .animate-shine {
+    animation: shine 5s linear infinite;
+  }
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;
