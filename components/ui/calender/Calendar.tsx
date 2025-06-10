@@ -13,10 +13,11 @@ import {CalendarEvent,CalendarProps } from "@/components/ui/calender/types/calen
 
 
 
-const Calendar: React.FC<CalendarProps> = ({ month, events }) => {
+const Calendar = () => {
   // 1) figure out the block of dates we need (Mon–Sun weeks)
-  const monthStart = startOfMonth(month);
-  const monthEnd = endOfMonth(month);
+  const today      = new Date();
+  const monthStart = startOfMonth(today);
+  const monthEnd   = endOfMonth(today);
   const gridStart = startOfWeek(monthStart, { weekStartsOn: 1 });   
   const gridEnd   = endOfWeek(monthEnd,   { weekStartsOn: 1 });   
 
@@ -33,10 +34,6 @@ const Calendar: React.FC<CalendarProps> = ({ month, events }) => {
 
       {/* Calendar cells */}
       {allDays.map(day => {
-        const dayEvents = events.filter(e =>
-          format(e.date,"yyyy-MM-dd") === format(day,"yyyy-MM-dd")
-        );
-
         return (
           <div
             key={day.toString()}

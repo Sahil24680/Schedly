@@ -1,8 +1,14 @@
 export interface CalendarEvent {
-    id: string;
-    title: string;
-    date: Date;
-    // add other props here (e.g. startTime?: string, color?: string, etc.)
+  id: string | null; // UUID,
+  title: string;
+  type: "Event" | "Meet" | "Tasks";
+  date: Date| null;
+  time: Date| null;
+  note: string|null;
+  link: string|null;
+  location: string|null;
+  color: string;
+    
   }
   
   export interface CalendarProps {
