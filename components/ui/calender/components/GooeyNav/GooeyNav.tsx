@@ -7,6 +7,7 @@ interface GooeyNavItem {
 
 export interface GooeyNavProps {
   items: GooeyNavItem[];
+  onChange?: (label: string) => void;
   animationTime?: number;
   particleCount?: number;
   particleDistances?: [number, number];
@@ -18,6 +19,7 @@ export interface GooeyNavProps {
 
 const GooeyNav: React.FC<GooeyNavProps> = ({
   items,
+  onChange,
   animationTime = 600,
   particleCount = 15,
   particleDistances = [90, 10],
@@ -110,6 +112,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     const liEl = e.currentTarget;
     if (activeIndex === index) return;
     setActiveIndex(index);
+    onChange?.(items[index].label);
     updateEffectPosition(liEl);
     if (filterRef.current) {
       const particles = filterRef.current.querySelectorAll(".particle");
@@ -308,7 +311,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
         >
           <ul
             ref={navRef}
-            className="flex gap-8 list-none p-0 px-0 m-0 relative z-[3]"
+            className="flex gap-2 sm:gap-4 md:gap-8 list-none p-0 px-0 m-0 relative z-[3]"
             style={{
               color: "white",
               textShadow: "0 1px 1px hsl(205deg 30% 10% / 0.2)",
@@ -317,9 +320,11 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
             {items.map((item, index) => (
               <li
                 key={index}
-                className={`py-[0.4em] px-[.8em] relative cursor-pointer  transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-white ${
-                  activeIndex === index ? "active" : ""
-                }`}
+                className={`py-2 px-2          
+                md:py-[0.6em] md:px-[0.8em]  relative cursor-pointer 
+  transition-[background-color_color_box-shadow] duration-300 ease shadow-[0_0_0.5px_1.5px_transparent] text-white ${
+    activeIndex === index ? "active" : ""
+  }`}
                 onClick={(e) => handleClick(e, index)}
               >
                 <a

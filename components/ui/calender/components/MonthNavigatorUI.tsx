@@ -34,7 +34,7 @@ export const MonthNavigatorUI: React.FC<MonthNavigatorUIProps> = ({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="center">
-            {(["Day", "Month", "Year"] as const).map((unit) => (
+            {(["Day","Week", "Month", "Year"] as const).map((unit) => (
               <DropdownMenuItem
                 key={unit}
                 onClick={() => onViewUnitChange(unit)}

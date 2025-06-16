@@ -7,12 +7,13 @@ import {
   Shapes,
   List,
   Palette,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@headlessui/react";
 import { CalendarEvent } from "@/components/ui/calender/types/calendar";
 import BasicDatePicker from "./BasicDatePicker";
 import { useState } from "react";
-import BasicTimePicker from "./BasicTimePicker";
+import CustomTimePicker from "./CustomTimePicker";
 type Props = {
   formData: Omit<CalendarEvent, "id">;
   setFormData: React.Dispatch<React.SetStateAction<Omit<CalendarEvent, "id">>>;
@@ -21,7 +22,7 @@ type Props = {
 export default function ScheduleFormUI({ formData, setFormData }: Props) {
   const [selectedType, setSelectedType] = useState("Event");
   const [selectedColor, setSelectedColor] = useState("bg-indigo-400");
-  
+
   const colors = [
     "bg-indigo-400",
     "bg-emerald-400",
@@ -46,7 +47,6 @@ export default function ScheduleFormUI({ formData, setFormData }: Props) {
 
         <input
           id="title"
-          required
           type="text"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -95,8 +95,8 @@ export default function ScheduleFormUI({ formData, setFormData }: Props) {
           <button
             type="button"
             onClick={() => {
-              setFormData({ ...formData, type: "Tasks" });
-              setSelectedType("Meet");
+              setFormData({ ...formData, type: "Exam" });
+              setSelectedType("Tasks");
             }}
             className={`flex-1 rounded-md px-3 py-2 text-sm cursor-pointer ${
               selectedType === "Tasks"
@@ -104,7 +104,7 @@ export default function ScheduleFormUI({ formData, setFormData }: Props) {
                 : "bg-zinc-700 text-white hover:bg-zinc-600"
             }`}
           >
-            Tasks
+            Exam
           </button>
         </div>
       </div>
@@ -124,15 +124,31 @@ export default function ScheduleFormUI({ formData, setFormData }: Props) {
       </div>
 
       {/* Time */}
-      <div className="flex flex-row items-center gap-4">
-        <div className="flex flex-row gap-2 items-center">
+      <div className="flex items-center gap-4">
+        {/* label */}
+        <div className="flex items-center gap-2">
           <Clock className="h-6 w-6 text-white" />
           <span className="text-md font-medium text-white">Time</span>
         </div>
-        <BasicTimePicker
-          value={formData.time}
-          onChange={(val) => setFormData({ ...formData, time: val })}
-        />
+
+        {/* entire picker-group column */}
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          {/* first half */}
+          <div className="flex-1 min-w-0">
+            <CustomTimePicker
+              value={formData.time_start}
+              onChange={(val) => setFormData({ ...formData, time_start: val })}
+            />
+          </div>
+          <ArrowRight className="h-6 w-6 text-white shrink-0" />
+          {/* second half */}
+          <div className="flex-1 min-w-0">
+            <CustomTimePicker
+              value={formData.time_end}
+              onChange={(val) => setFormData({ ...formData, time_end: val })}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Note */}
@@ -186,27 +202,27 @@ export default function ScheduleFormUI({ formData, setFormData }: Props) {
 
       {/* Colors */}
       <div className="flex flex-row items-center gap-6">
-      <div className="flex flex-row gap-2">
-        <Palette className="h-6 w-6 text-white" />
-        <span className="text-md font-medium text-white">Color</span>
-      </div>
-      <div className="w-full flex space-x-3">
-        {colors.map((c) => (
-          <button
-            key={c}
-            type="button"
-            onClick={() => {
-              setSelectedColor(c);                      
-              setFormData({ ...formData, color: c });    
-            }}
-            className={`
+        <div className="flex flex-row gap-2">
+          <Palette className="h-6 w-6 text-white" />
+          <span className="text-md font-medium text-white">Color</span>
+        </div>
+        <div className="w-full flex space-x-3">
+          {colors.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => {
+                setSelectedColor(c);
+                setFormData({ ...formData, color: c });
+              }}
+              className={`
               ${c} h-6 w-6 rounded-full cursor-pointer ring-2 shadow-md
               ${selectedColor === c ? "ring-white" : "ring-transparent"}
               hover:ring-white
             `}
-          />
-        ))}
-      </div>
+            />
+          ))}
+        </div>
       </div>
 
       {/* Buttons */}

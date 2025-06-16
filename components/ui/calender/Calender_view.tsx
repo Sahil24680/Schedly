@@ -1,16 +1,22 @@
 "use client";
-import { useState } from "react";
 import { Search } from "lucide-react";
-import GooeyNav from "@/components/GooeyNav/GooeyNav";
-import CalendarHeader from "@/components/ui/calender/CalendarHeader"
+import GooeyNav from "@/components/ui/calender/components/GooeyNav/GooeyNav";
+import CalendarHeader from "@/components/ui/calender/CalendarHeader";
 import Calendar from "@/components/ui/calender/Calendar";
-import {CalendarEvent} from "@/components/ui/calender/types/calendar"
-const Calender_view = () => {
-  
+import { CalendarProvider } from "@/components/ui/calender/CalendarContext";
+import { useCalendar } from "@/components/ui/calender/CalendarContext";
+const Calender_view = () => (
+  <CalendarProvider>
+    <CalenderInner />
+  </CalendarProvider>
+);
+const CalenderInner = () => {
+  const { setFilter } = useCalendar();
   const items = [
+    { label: "Overview", href: "#" },
     { label: "Exams", href: "#" },
     { label: "Meetings", href: "#" },
-    { label: "classes", href: "#" },
+    { label: "Events", href: "#" },
   ];
   return (
     <div className="p-4 md:p-10 w-full ">
@@ -27,10 +33,11 @@ const Calender_view = () => {
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
         </div>
       </div>
-      <div className="mt-6 md:mt-0 border border-zinc-700 bg-gray-800 rounded-md inline-block " >
+      <div className="mt-6 md:mt-0 border border-zinc-700 bg-gray-800 rounded-sm inline-block ">
         <GooeyNav
           items={items}
           particleCount={15}
+          onChange={setFilter}
           particleDistances={[90, 10]}
           particleR={15}
           initialActiveIndex={0}
@@ -41,13 +48,9 @@ const Calender_view = () => {
       </div>
 
       <div className="mt-2">
-        <CalendarHeader/>
+        <CalendarHeader />
         <Calendar />
-        </div>
-
-
-
-
+      </div>
     </div>
   );
 };

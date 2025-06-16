@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { useState } from "react";
 import ScheduleFormUI from "./ScheduleFormUI";
 import { CalendarEvent } from "@/components/ui/calender/types/calendar";
+import { toast } from "react-toastify";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -12,7 +13,8 @@ const makeEmptyForm = (): Omit<CalendarEvent, "id"> => ({
   title: "",
   type: "Event",
   date: null,
-  time: null,
+  time_start: null,
+  time_end:   null,
   note: null,
   link: null,
   location: null,
@@ -28,6 +30,22 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.title) {
+      toast.error("Please select a title");
+      return;
+    }
+    if (!formData.date) {
+      toast.error("Please select a date", {
+        className: "bg-red-700 text-white rounded-md",
+        progressClassName: "bg-yellow-300",
+      });
+      
+      return;
+    }
+    if (!formData.time_start) {
+      toast.error("Please select a time");
+      return;
+    }
     const newEvent: CalendarEvent = {
       id: crypto.randomUUID(),
       ...formData,
@@ -42,7 +60,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
         open={isOpen}
         as="div"
         className="relative z-10 focus:outline-none"
-        onClose={onClose}
+        onClose={handleClose}
       >
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4">
@@ -52,7 +70,7 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
             >
               {/* Close button */}
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="absolute top-4 right-4 cursor-pointer text-white hover:text-gray-300"
               >
                 <X className="h-5 w-5" />
