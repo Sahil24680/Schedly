@@ -13,9 +13,10 @@ interface DayViewProps {
   date: Date;
   events: CalendarEvent[];
   slotHeight?: number;
+  onEventClick: (event: CalendarEvent) => void;
 }
 
-const Day_View: React.FC<DayViewProps> = ({ date, events, slotHeight = 1 }) => {
+const Day_View: React.FC<DayViewProps> = ({ date, events, slotHeight = 1,onEventClick,  }) => {
   const dayStart = startOfDay(date);
 
   // 1) filter to today and compute minute offset & height
@@ -62,7 +63,10 @@ const Day_View: React.FC<DayViewProps> = ({ date, events, slotHeight = 1 }) => {
           return items.map(({ ev, height }, idx) => (
             <div
               key={ev.id}
-              className={`${ev.color} absolute rounded-lg p-1  text-[0.7rem] overflow-hidden`}
+              onClick={() => onEventClick(ev)}
+              className={`${ev.color} absolute rounded-lg p-1 cursor-pointer text-[0.7rem] overflow-hidden transition-transform duration-150 ease-in-out
+              hover:scale-105
+              hover:shadow-lg hover:brightness-90`}
               style={{
                 top: offset * slotHeight,
                 height: height * slotHeight,

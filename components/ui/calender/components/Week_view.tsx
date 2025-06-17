@@ -17,6 +17,7 @@ export interface WeekViewProps {
   referenceDate?: Date;
   events: CalendarEvent[];
   slotHeight?: number; // px per minute
+  onEventClick: (event: CalendarEvent) => void;
 }
 
 const DAYS_OF_WEEK = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -71,6 +72,7 @@ export default function WeekView({
   referenceDate = new Date(),
   events,
   slotHeight = 1,
+  onEventClick, 
 }: WeekViewProps) {
   const weekDates = useMemo(() => getWeekDates(referenceDate), [referenceDate]);
 
@@ -165,7 +167,10 @@ export default function WeekView({
                   return (
                     <div
                       key={ev.id?.toString()}
-                      className={`absolute px-2 py-1 rounded-lg shadow text-[0.85rem] font-medium cursor-pointer overflow-hidden ${ev.color}`}
+                      onClick={() => onEventClick(ev)}  
+                      className={`${ev.color} absolute rounded-lg p-1 cursor-pointer text-[0.7rem] overflow-hidden transition-transform duration-150 ease-in-out
+              hover:scale-105
+              hover:shadow-lg hover:brightness-90`}
                       style={{
                         top,
                         height,

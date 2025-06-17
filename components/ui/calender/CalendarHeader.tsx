@@ -2,7 +2,7 @@ import ShinyText from "@/components/ui/ShinyText";
 import { useState } from "react";
 import { format, addMonths, subMonths } from "date-fns";
 import { MonthNavigatorUI } from "@/components/ui/calender/components/MonthNavigatorUI";
-import Modal from "@/components/ui/calender/components/Modal";
+import Modal from "@/components/ui/calender/components/Add_event_modal";
 import { useCalendar } from "./CalendarContext";
 const CalendarHeader = () => {
   const {
