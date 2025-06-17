@@ -125,21 +125,27 @@ const CalendarContext = createContext<CalendarContextType | undefined>(
 export function CalendarProvider({ children }: { children: React.ReactNode }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [viewUnit, setViewUnit] = useState<ViewUnit>("Month");
-  
 
   const [filter, setFilter] = useState<string>("Overview");
 
+  const normalize = (s: string) => s.toLowerCase().replace(/s$/, "");
 
-  const normalize = (s: string) =>
-    s
-      .toLowerCase()
-      .replace(/s$/, "");
+  const eventMap = useMemo(() => {
+    const map = new Map<string, CalendarEvent[]>();
+    map.set("overview", dummyEvents);
+
+    for (const event of dummyEvents) {
+      const key = normalize(event.type);
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(event);
+    }
+
+    return map;
+  }, []);
 
   const events = useMemo(() => {
-    const f = normalize(filter);
-    if (f === "overview") return dummyEvents;
-    return dummyEvents.filter((ev) => normalize(ev.type) === f);
-  }, [filter, dummyEvents]);
+    return eventMap.get(normalize(filter)) || [];
+  }, [filter, eventMap]);
 
   const prevDay = () => setCurrentMonth((d) => subDays(d, 1));
   const nextDay = () => setCurrentMonth((d) => addDays(d, 1));
